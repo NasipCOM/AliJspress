@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartBtn = document.getElementById('cart');
     const goodsWrapper = document.querySelector('.goods-wrapper');
     const cart = document.querySelector('.cart');
-
+    const category = document.querySelector('.category');
 
 
 
@@ -67,7 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
 
     const renderCard = items =>{
-        items.map((item) => {
+        goodsWrapper.textContent = '';
+        items.forEach((item) => {
             goodsWrapper.append(createCardGoods(item.id, item.title, item.price, item.imgMin));
         })
     }
@@ -85,10 +86,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
     
-    getGoods(renderCard, extraFilter)
+    const chooseCategory = event =>{
+        event.preventDefault();
+        const target = event.target;
+
+        if(target.classList.contains('category-item')){
+            getGoods(renderCard, (goods) =>{
+                const newGoods = goods.filter(item => {
+                    return item.category.includes(target.dataset.category);
+                })
+                return newGoods;
+            })
+
+            // console.log(target.dataset.category);
+        }
+    }
+
+
 
     cartBtn.addEventListener('click', openCart);
-    cart.addEventListener('click', closeCart)
+    cart.addEventListener('click', closeCart);
+    category.addEventListener('click', chooseCategory);
 
+
+
+    getGoods(renderCard, extraFilter)
 
 });
