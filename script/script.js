@@ -42,9 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                 
     return card;
     }
-    goodsWrapper.append(createCardGoods(1, "Дартс", 2000, "img/temp/Archer.jpg"));
-    goodsWrapper.append(createCardGoods(2, "Фламинго", 3000, "img/temp/Flamingo.jpg"));
-    goodsWrapper.append(createCardGoods(3, "Носки", 3000, "img/temp/Socks.jpg"));
+    // goodsWrapper.append(createCardGoods(1, "Дартс", 2000, "img/temp/Archer.jpg"));
+    // goodsWrapper.append(createCardGoods(2, "Фламинго", 3000, "img/temp/Flamingo.jpg"));
+    // goodsWrapper.append(createCardGoods(3, "Носки", 3000, "img/temp/Socks.jpg"));
 
 
     const openCart = () => {
@@ -67,20 +67,25 @@ document.addEventListener('DOMContentLoaded', () => {
   
 
     const renderCard = items =>{
-        items.forEach((item) => {
+        items.map((item) => {
             goodsWrapper.append(createCardGoods(item.id, item.title, item.price, item.imgMin));
         })
     }
 
 
-    const getGoods = (handler) => {
+    const extraFilter = (item) =>{
+        item.sort(() => Math.random() - 0.5) //чтобы был рандом нужно сделать отрицательным - 0.5
+        return item;                         
+    }
+    const getGoods = (handler, filter) => {
         fetch('db/db.json')
         .then(response => response.json())
+        .then(filter)
         .then(handler);
 
     }
     
-    getGoods(renderCard)
+    getGoods(renderCard, extraFilter)
 
     cartBtn.addEventListener('click', openCart);
     cart.addEventListener('click', closeCart)
