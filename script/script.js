@@ -19,7 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const cart = document.querySelector('.cart');
     const category = document.querySelector('.category');
 
+    const search = document.querySelector('.search');
 
+    const loading = () =>{
+        goodsWrapper.innerHTML = `<div id="spinner"><div class="spinner-loading"><div><div><div></div>
+        </div><div><div></div></div><div><div></div></div><div><div></div></div></div></div></div>
+        `
+    }
 
 
     const createCardGoods = (id, title, price, img) => {
@@ -52,14 +58,15 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const closeCart = (event) => {
-        window.onkeydown = function( event ) {
-            if ( event.keyCode == 27 ) {
-                cart.style.display = 'none';
-            }
-        };
+        
         const target = event.target;
 
         if(target === cart || target.className === "cart-close"){
+            cart.style.display = 'none';
+        }
+    };
+    window.onkeydown = function( event ) {
+        if ( event.keyCode == 27 ) {
             cart.style.display = 'none';
         }
     };
@@ -79,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return item;                         
     }
     const getGoods = (handler, filter) => {
+        loading();
         fetch('db/db.json')
         .then(response => response.json())
         .then(filter)
@@ -103,10 +111,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    const searchGoods = event =>{
+        event.preventDefault();
+        const input = event.target.elements.searchGoods;
+ 
+        if(input.value.trim() !== ''){    // trim() убирает пробелы
+            const searchString = new RegExp(input.value.trim(), 'i');
+            getGoods(renderCard, goods => goods.filter(item => searchString.test(item.title)));
+            // if(item.title === ''){
+            //     goodsWrapper.innerHTML = `Nothing Found`
+            // }
+        
+    }
+}
 
     cartBtn.addEventListener('click', openCart);
     cart.addEventListener('click', closeCart);
     category.addEventListener('click', chooseCategory);
+    search.addEventListener('submit', searchGoods);
 
 
 
