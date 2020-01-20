@@ -75,9 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderCard = items =>{
         goodsWrapper.textContent = '';
-        items.forEach((item) => {
-            goodsWrapper.append(createCardGoods(item.id, item.title, item.price, item.imgMin));
-        })
+
+        if(items.length){
+            items.forEach((item) => {
+                goodsWrapper.append(createCardGoods(item.id, item.title, item.price, item.imgMin));
+            })
+        }else{
+            goodsWrapper.innerHTML = `❌ По вашему запросу нечего не найдено`;
+        }
     }
 
 
@@ -118,9 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(input.value.trim() !== ''){    // trim() убирает пробелы
             const searchString = new RegExp(input.value.trim(), 'i');
             getGoods(renderCard, goods => goods.filter(item => searchString.test(item.title)));
-            // if(item.title === ''){
-            //     goodsWrapper.innerHTML = `Nothing Found`
-            // }
+            
         
     }
 }
