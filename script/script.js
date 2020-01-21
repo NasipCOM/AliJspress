@@ -123,9 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if(input.value.trim() !== ''){    // trim() убирает пробелы
             const searchString = new RegExp(input.value.trim(), 'i');
             getGoods(renderCard, goods => goods.filter(item => searchString.test(item.title)));
-            
-        
     }
+        input.value = '';
 }
 
     cartBtn.addEventListener('click', openCart);
